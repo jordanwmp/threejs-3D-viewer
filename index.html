@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js 3D Viewer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="container__sidebar">
+
+            <h1 class="sidebar__title">Select your model</h1>
+            <form class="sidebar__form">
+                <div class="form__group">
+                    <label for="file" class="form__label">Your model</label>
+                    <input type="file" id="file" class="form__input" accept=".glb, .gltf" />
+                </div>
+            </form>
+
+            <div class="sidebar__animations">
+                <h2 class="animations__title">Animations</h2>
+                <ul class="animations__list">
+                    <!-- <li class="animations__item"></li> -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="container__visualizador"></div>
+
+    </div>
+
+</body>
+
+</html>
