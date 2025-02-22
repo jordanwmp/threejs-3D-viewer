@@ -1,6 +1,6 @@
 # 3D Model Viewer for .glb and .gltf Files using Three.js
 
-![Home Screen](./screen/home.gif)
+![Home Screen](./screens/home.gif)
 
 ## Description
 
