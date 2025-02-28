@@ -30,7 +30,7 @@ module.exports = {
     },
     devServer: {
         static: {
-            directory: path.join(__dirname, 'dist')
+            directory: path.join(__dirname, 'public')
         },
         port: 8000,
         hot: true
@@ -42,11 +42,11 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [
-                { from: 'public/models', to: 'models' }
+                { from: 'public/models', to: 'models' },
             ],
         }),
         new MiniCssExtractPlugin({
             filename: 'style.css'
-          }),
+        }),
     ]
 }

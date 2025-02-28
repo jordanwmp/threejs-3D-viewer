@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import Animation from './Animation';
 
 class Setup {
 
@@ -10,31 +9,27 @@ class Setup {
     _light;
     _orbit;
     _ambientLight;
-    animation
 
     constructor() {
         this.init();
         this.resize();
-        this.startAnimation();
-        this.animation = new Animation(this._scene)
     }
 
     async init() {
         this.renderer();
         this.scene();
         this.camera();
-        this.lights(); // Adicionar a função para configurar as luzes
+        this.lights();
         this.orbit();
-        this.startAnimation();
-    }
-
-    startAnimation() {
-        this._renderer.setAnimationLoop(() => this.animate());
     }
 
     orbit() {
         this._orbit = new OrbitControls(this._camera, this._renderer.domElement);
-        this._camera.position.set(0, 3, 4);
+        this._orbit.enableDamping = true
+        this._orbit.minDistance = 5
+        this._orbit.maxDistance = 15
+        this._orbit.enablePan = false
+        this._orbit.maxPolarAngle = (Math.PI / 2) - 0.05
         this._orbit.update();
     }
 
@@ -45,6 +40,10 @@ class Setup {
             0.1,
             1000
         );
+
+        this._camera.position.y = 0.3;
+        this._camera.position.z = 1;
+        this._camera.position.x = 0;
     }
 
     scene() {
@@ -54,10 +53,8 @@ class Setup {
     renderer() {
         this._renderer = new THREE.WebGLRenderer({ antialias: true });
         this._renderer.setSize(window.innerWidth, window.innerHeight);
-        const container = document.querySelector('.container__visualizador');
-        // document.body.appendChild(this._renderer.domElement);
-        container.appendChild(this._renderer.domElement);
-        this._renderer.setClearColor(0xb7ded2);
+        this._renderer.setClearColor(0xf7f7f7)
+        document.body.appendChild(this._renderer.domElement);
     }
 
     lights() {
@@ -69,11 +66,6 @@ class Setup {
         // Adicionar luz ambiente
         this._ambientLight = new THREE.AmbientLight(0x404040); // Cor de iluminação ambiente
         this._scene.add(this._ambientLight);
-    }
-
-    animate() {
-        this.animation.update()
-        this._renderer.render(this._scene, this._camera);
     }
 
     resize() {

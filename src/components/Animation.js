@@ -1,57 +1,48 @@
-import { AnimationMixer, Clock } from 'three';
-import animationMixer from '../helpers/animationMixer';
-import GUI from './GUI';
+import * as THREE from 'three'
+import { AnimationMixer } from 'three';
 
 class Animation {
 
-    GUI;
+    animations
+    mixer
+    actions
 
     constructor(scene) {
-        this.scene = scene;
-        // this.mixer = null;
-        animationMixer.mixer = null
-        this.clock = new Clock();
-        this.actions = [];
-        this.GUI = new GUI()
+        this._scene = scene;
+        this.actions = new Map();
     }
 
-    initialize(gltf, timeScale = 0.5) {
-        this.actions = []
-        this.GUI.clearListAnimation()
-
+    initialize(gltf, timeScale = 1) {
         if (gltf.animations && gltf.animations.length > 0) {
-            animationMixer.mixer = new AnimationMixer(gltf.scene); // Use `gltf.scene` para criar o mixer
+            this.animations = gltf.animations
+            this.mixer = new AnimationMixer(gltf.scene);
 
-            gltf.animations.forEach((clip) => {
-                const action = animationMixer.mixer.clipAction(clip);
+            gltf.animations.filter(a => a.name != 'TPose').forEach((a) => {
+                const action = this.mixer.clipAction(a);
                 action.timeScale = timeScale
-                this.actions.push(action);
-            });
-
+                this.actions.set(a.name, action)
+            })
+        } else {
+            console.log('NO ANIMATIONS')
         }
 
-        animationMixer.action = this.actions
-        this.GUI.createAnimationList(animationMixer.action)
-
+        console.log('ACTIONS ', this.actions)
     }
 
-    playAll() {
-        this.actions.forEach((action) => {
-            action.play();
-        });
-    }
-
-    update() {
-        if (animationMixer.mixer) {
-            const delta = this.clock.getDelta();
-            animationMixer.mixer.update(delta);
+    play(animation) {
+        const clip = THREE.AnimationClip.findByName(this.animations, animation)
+        if (clip) {
+            const action = this.mixer.clipAction(clip)
+            action.play()
+        } else {
+            console.log('Clip not found ', animation)
         }
     }
 
-    stopAll() {
-        this.actions.forEach((action) => {
-            action.stop();
-        });
+    update(delta) {
+        if (this.mixer) {
+            this.mixer.update(delta)
+        }
     }
 }
 
